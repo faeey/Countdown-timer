@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Countdown Timer</title>
+</head>
+<body>
+  <h1>Countdown Timer</h1>
+  <p id="timer">01:00:00</p>
+  <button id="startButton">Start</button>
+  <button id="stopButton">Stop</button>
+  <button id="addTimeButton">Add 15s</button>
+
+  <script>
+    let initialTime = 1 * 60 * 60; // 1 hour
+    let maxAdditionalTime = 8 * 60 * 60; // Maximum additional time: 8 hours
+    let timeLeft = initialTime;
+    let intervalId = null;
+
+    function updateTimerDisplay() {
+      const hours = Math.floor(timeLeft / 3600);
+      const minutes = Math.floor((timeLeft % 3600) / 60);
+      const seconds = timeLeft % 60;
+      const displayTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      document.getElementById('timer').textContent = displayTime;
+    }
+
+    document.getElementById('startButton').addEventListener('click', () => {
+      if (!intervalId) {
+        intervalId = setInterval(() => {
+          if (timeLeft > 0) {
+            timeLeft--;
+            updateTimerDisplay();
+          } else {
+            clearInterval(intervalId);
+            intervalId = null;
+            alert('Time\'s up!');
+          }
+        }, 1000);
+      }
+    });
+
+    document.getElementById('stopButton').addEventListener('click', () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+    });
+
+    document.getElementById('addTimeButton').addEventListener('click', () => {
+      if (timeLeft < initialTime + maxAdditionalTime) {
+        timeLeft += 15; // Add 15 seconds
+        updateTimerDisplay();
+      }
+    });
+
+    updateTimerDisplay();
+  </script>
+</body>
+</html>
